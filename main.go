@@ -1,8 +1,13 @@
 package main
 
-import "history-graph-notes-server/dao"
+import (
+	"github.com/prometheus/common/log"
+	"history-graph-notes-server/handlers"
+	"net/http"
+)
 
-func main(){
-	dao.GetNode("乔治·华盛顿")
+func main() {
+	handlers.Init()
+	log.Info("router init ok!")
+	http.ListenAndServe(":8080", nil)
 }
-

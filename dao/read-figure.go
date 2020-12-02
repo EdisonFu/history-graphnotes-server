@@ -1,40 +1,51 @@
 package dao
 
 import (
+	"fmt"
 	"github.com/neo4j/neo4j-go-driver/neo4j"
-	."history-graph-notes-server/model"
+	. "history-graph-notes-server/model"
 	"history-graph-notes-server/util"
 	"log"
+	"strings"
 )
 
-func GetFigureProper(){
+func GetFigureSingleProper(name string, proper string) (interface{}, error) {
 	driver, err := neo4j.NewDriver(Uri, neo4j.BasicAuth(Username, Password, ""), func(c *neo4j.Config) {
 		c.Encrypted = false
 	})
 	if err != nil {
 		log.Println("error connecting to neo4j:", err)
-		return
+		return "", err
 	}
 	defer driver.Close()
 
 	session, err := driver.Session(neo4j.AccessModeRead)
 	if err != nil {
 		log.Println("driver session err:", err)
-		return
+		return "", err
 	}
 	defer session.Close()
 
-	people, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+	result, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
 		var list []string
 
-		result, err := tx.Run("MATCH (a:Person) RETURN a.name", nil)
+		cypher := `MATCH (a:Person) WHERE a.name=$name RETURN a.%s`
+		result, err := tx.Run(fmt.Sprintf(cypher, proper), map[string]interface{}{"name": name})
 		if err != nil {
 			return nil, err
 		}
 
 		for result.Next() {
-			if result.Record().GetByIndex(0) != nil{
-				list = append(list, result.Record().GetByIndex(0).(string))
+			if result.Record().GetByIndex(0) != nil {
+				switch result.Record().GetByIndex(0).(type) {
+				case []interface{}:
+					strlist := util.ToStringSlice(result.Record().GetByIndex(0).([]interface{}))
+					list = append(list, strings.Join(strlist, ";"))
+				case interface{}:
+					list = append(list, result.Record().GetByIndex(0).(string))
+				default:
+					continue
+				}
 			}
 		}
 
@@ -43,37 +54,43 @@ func GetFigureProper(){
 			return nil, err
 		}
 
-		return list, nil
+		if len(list) > 0 {
+			return list[0], nil
+		}
+		return "", util.ErrEmpty
 	})
+
 	if err != nil {
 		log.Println("session ReadTransaction err:", err)
+		return "", util.ErrEmpty
 	}
 
-	log.Println("result", people)
+	log.Println("GetFigureNodeProper from neo4j result", result)
+	return result, nil
 }
 
-func GetFigureNode(name string){
+func GetFigureNodeProper(name string) (interface{}, error) {
 	driver, err := neo4j.NewDriver(Uri, neo4j.BasicAuth(Username, Password, ""), func(c *neo4j.Config) {
 		c.Encrypted = false
 	})
 	if err != nil {
 		log.Println("error connecting to neo4j:", err)
-		return
+		return nil, err
 	}
 	defer driver.Close()
 
 	session, err := driver.Session(neo4j.AccessModeRead)
 	if err != nil {
 		log.Println("driver session err:", err)
-		return
+		return nil, err
 	}
 	defer session.Close()
 
-	figures, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+	result, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
 		var list []*HistoryFigure
 
-		result, err := tx.Run("MATCH (a:Person) WHERE a.name=$name RETURN " +
-			"a.name as name, a.country as country, a.birthday as birthday, " +
+		result, err := tx.Run("MATCH (a:Person) WHERE a.name=$name RETURN "+
+			"a.name as name, a.country as country, a.birthday as birthday, "+
 			"a.homeland as homeland, a.occupation as occupation, a.achievements as achievements, a.works as works",
 			map[string]interface{}{"name": name})
 		if err != nil {
@@ -92,29 +109,29 @@ func GetFigureNode(name string){
 			achievements, _ := record.Get("achievements")
 			works, _ := record.Get("works")
 
-			if name !=nil {
+			if name != nil {
 				figure.Name = name.(string)
 			}
-			if country !=nil {
+			if country != nil {
 				figure.Country = country.(string)
 			}
-			if birthday !=nil {
+			if birthday != nil {
 				figure.Birthday = birthday.(string)
 			}
-			if homeland !=nil {
+			if homeland != nil {
 				figure.Homeland = homeland.(string)
 			}
-			if occupation !=nil {
+			if occupation != nil {
 				figure.Occupation = occupation.(string)
 			}
-			if achievements !=nil {
+			if achievements != nil {
 				figure.Achievements = util.ToStringSlice(achievements.([]interface{}))
 			}
-			if works !=nil {
+			if works != nil {
 				figure.Works = util.ToStringSlice(works.([]interface{}))
 			}
 
-			if result.Record().GetByIndex(0) != nil{
+			if result.Record().GetByIndex(0) != nil {
 				list = append(list, figure)
 			}
 		}
@@ -124,11 +141,16 @@ func GetFigureNode(name string){
 			return nil, err
 		}
 
-		return list, nil
+		if len(list) > 0 {
+			return list[0], nil
+		}
+		return "", util.ErrEmpty
 	})
 	if err != nil {
 		log.Println("GetFigureNode session ReadTransaction err:", err)
+		return "", util.ErrEmpty
 	}
 
-	log.Println("result", figures)
+	log.Println("GetFigureSingleProper from neo4j result", result)
+	return result, nil
 }
