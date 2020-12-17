@@ -6,6 +6,28 @@ const (
 	Password = "web123456"
 )
 
+//figure
+type FigureSingleProperReq struct {
+	Name   string
+	Proper string
+}
+
+type FigureSingleProperResp struct {
+	Code int
+	Msg  string
+	Data string
+}
+
+type FigureNodeProperReq struct {
+	Name string
+}
+
+type FigureNodeProperResp struct {
+	Code int
+	Msg  string
+	Data *HistoryFigure
+}
+
 type HistoryFigure struct {
 	Name         string
 	Country      string
@@ -14,6 +36,28 @@ type HistoryFigure struct {
 	Occupation   string
 	Achievements []string
 	Works        []string
+}
+
+//event
+type EventSingleProperReq struct {
+	Name   string
+	Proper string
+}
+
+type EventSingleProperResp struct {
+	Code int
+	Msg  string
+	Data string
+}
+
+type EventNodeProperReq struct {
+	Name string
+}
+
+type EventNodeProperResp struct {
+	Code int
+	Msg  string
+	Data *HistoryEvent
 }
 
 type HistoryEvent struct {
@@ -27,23 +71,40 @@ type HistoryEvent struct {
 	MainParticipantFigures []string
 }
 
-type FigureSingleProperReq struct {
-	Name   string
-	Proper string
+//relation
+type RelationLineReq struct {
+	NameA  string
+	LableA string
+	NameB  string
+	LableB string
 }
 
-type FigureNodeProperReq struct {
-	Name string
-}
-
-type FigureSingleProperResp struct {
+type RelationLineResp struct {
 	Code int
 	Msg  string
 	Data string
 }
 
-type FigureNodeProperResp struct {
+type NodeRelationReq struct {
+	Name  string
+	Lable string
+}
+
+type NodeRelationResp struct {
 	Code int
 	Msg  string
-	Data *HistoryFigure
+	Data map[string]string
+}
+
+type RelationPathReq struct {
+	NameA  string
+	LableA string
+	NameB  string
+	LableB string
+}
+
+type RelationPathResp struct {
+	Code int
+	Msg  string
+	Data []string
 }

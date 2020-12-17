@@ -4,9 +4,7 @@ import (
 	"history-graph-notes-server/dao"
 )
 
-type eventService struct{}
-
-func (eventService) ReadNodeProper(name string) (interface{}, error) {
+func (historyService) ReadEventNodeProper(name string) (interface{}, error) {
 	result, err := dao.GetEventNodeProper(name)
 	if err != nil {
 		return nil, err
@@ -14,7 +12,7 @@ func (eventService) ReadNodeProper(name string) (interface{}, error) {
 	return result, nil
 }
 
-func (eventService) ReadSingleProper(name, proper string) (interface{}, error) {
+func (historyService) ReadEventSingleProper(name, proper string) (interface{}, error) {
 	result, err := dao.GetEventSingleProper(name, proper)
 	if err != nil {
 		return nil, err

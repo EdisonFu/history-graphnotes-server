@@ -2,18 +2,24 @@ package handlers
 
 import "history-graph-notes-server/dao"
 
-type relationService struct{}
-
-func (relationService) ReadNodeProper(name string) (interface{}, error) {
-	result, err := dao.GetRelationNodeProper(name)
+func (historyService) ReadLineRelation(nameA, lableA, nameB, lableB string) (interface{}, error) {
+	result, err := dao.GetRelation(nameA, lableA, nameB, lableB)
 	if err != nil {
 		return nil, err
 	}
 	return result, nil
 }
 
-func (relationService) ReadSingleProper(name, proper string) (interface{}, error) {
-	result, err := dao.GetRelationSingleProper(name, proper)
+func (historyService) ReadRelationNode(name, lable string) (interface{}, error) {
+	result, err := dao.GetRelationAndNode(name, lable)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+func (historyService) ReadAllRelationPath(nameA, lableA, nameB, lableB string) (interface{}, error) {
+	result, err := dao.GetAllRelationPath(nameA, lableA, nameB, lableB)
 	if err != nil {
 		return nil, err
 	}

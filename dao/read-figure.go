@@ -10,16 +10,7 @@ import (
 )
 
 func GetFigureSingleProper(name string, proper string) (interface{}, error) {
-	driver, err := neo4j.NewDriver(Uri, neo4j.BasicAuth(Username, Password, ""), func(c *neo4j.Config) {
-		c.Encrypted = false
-	})
-	if err != nil {
-		log.Println("error connecting to neo4j:", err)
-		return "", err
-	}
-	defer driver.Close()
-
-	session, err := driver.Session(neo4j.AccessModeRead)
+	session, err := GetNeo4jConn().Session(neo4j.AccessModeRead)
 	if err != nil {
 		log.Println("driver session err:", err)
 		return "", err
@@ -70,16 +61,7 @@ func GetFigureSingleProper(name string, proper string) (interface{}, error) {
 }
 
 func GetFigureNodeProper(name string) (interface{}, error) {
-	driver, err := neo4j.NewDriver(Uri, neo4j.BasicAuth(Username, Password, ""), func(c *neo4j.Config) {
-		c.Encrypted = false
-	})
-	if err != nil {
-		log.Println("error connecting to neo4j:", err)
-		return nil, err
-	}
-	defer driver.Close()
-
-	session, err := driver.Session(neo4j.AccessModeRead)
+	session, err := GetNeo4jConn().Session(neo4j.AccessModeRead)
 	if err != nil {
 		log.Println("driver session err:", err)
 		return nil, err

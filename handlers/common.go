@@ -1,6 +1,13 @@
 package handlers
 
+type historyService struct{}
+
 type HistoryService interface {
-	ReadSingleProper(string, string) (interface{}, error)
-	ReadNodeProper(string) (interface{}, error)
+	ReadFigureSingleProper(string, string) (interface{}, error)
+	ReadFigureNodeProper(string) (interface{}, error)
+	ReadEventSingleProper(string, string) (interface{}, error)
+	ReadEventNodeProper(string) (interface{}, error)
+	ReadLineRelation(string, string, string, string) (interface{}, error)
+	ReadRelationNode(string, string) (interface{}, error)
+	ReadAllRelationPath(string, string, string, string) (interface{}, error)
 }
