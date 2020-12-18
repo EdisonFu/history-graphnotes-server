@@ -108,3 +108,28 @@ type RelationPathResp struct {
 	Msg  string
 	Data []string
 }
+
+//add
+type AddNodeReq struct {
+	Label  string
+	Proper map[string]string
+}
+
+type AddNodeResp struct {
+	Code int
+	Msg  string
+}
+
+type AddRelationReq struct {
+	NameA        string
+	LabelA       string
+	NameB        string
+	LabelB       string
+	RelationType string
+	Proper       map[string]string
+}
+
+type AddRelationResp struct {
+	Code int
+	Msg  string
+}

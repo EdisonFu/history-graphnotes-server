@@ -145,6 +145,45 @@ func decodeRelationPathRequest(_ context.Context, r *http.Request) (interface{},
 	return request, nil
 }
 
+//add handler
+func MakeAddNodeEndpoint(svc HistoryService) endpoint.Endpoint {
+	return func(_ context.Context, request interface{}) (interface{}, error) {
+		req := request.(AddNodeReq)
+		err := svc.AddNode(req.Label, req.Proper)
+		if err != nil {
+			return AddNodeResp{-1, err.Error()}, nil
+		}
+		return AddNodeResp{0, ""}, nil
+	}
+}
+
+func decodeAddNodeRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	var request AddNodeReq
+	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+		return nil, err
+	}
+	return request, nil
+}
+
+func MakeAddNodeRelationEndpoint(svc HistoryService) endpoint.Endpoint {
+	return func(_ context.Context, request interface{}) (interface{}, error) {
+		req := request.(AddRelationReq)
+		err := svc.AddNodeRelation(req.NameA, req.LabelA, req.NameB, req.LabelB, req.RelationType, req.Proper)
+		if err != nil {
+			return AddRelationResp{-1, err.Error()}, nil
+		}
+		return AddRelationResp{0, ""}, nil
+	}
+}
+
+func decodeAddNodeRelationRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	var request AddRelationReq
+	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+		return nil, err
+	}
+	return request, nil
+}
+
 func encodeResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	return json.NewEncoder(w).Encode(response)
 }
