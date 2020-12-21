@@ -74,9 +74,9 @@ type HistoryEvent struct {
 //relation
 type RelationLineReq struct {
 	NameA  string
-	LableA string
+	LabelA string
 	NameB  string
-	LableB string
+	LabelB string
 }
 
 type RelationLineResp struct {
@@ -87,7 +87,7 @@ type RelationLineResp struct {
 
 type NodeRelationReq struct {
 	Name  string
-	Lable string
+	Label string
 }
 
 type NodeRelationResp struct {
@@ -98,9 +98,9 @@ type NodeRelationResp struct {
 
 type RelationPathReq struct {
 	NameA  string
-	LableA string
+	LabelA string
 	NameB  string
-	LableB string
+	LabelB string
 }
 
 type RelationPathResp struct {
@@ -132,4 +132,25 @@ type AddRelationReq struct {
 type AddRelationResp struct {
 	Code int
 	Msg  string
+}
+
+//contribution
+type SetContributeReq struct {
+	UserId  string
+	Content string
+}
+
+type SetContributeResp struct {
+	Code int
+	Msg  string
+}
+
+type GetContributeReq struct {
+	UserId string
+}
+
+type GetContributeResp struct {
+	Code    int
+	Msg     string
+	Content []string
 }

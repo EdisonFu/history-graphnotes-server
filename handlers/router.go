@@ -62,6 +62,18 @@ func Init() {
 		encodeResponse,
 	)
 
+	setContributeHandler := httptransport.NewServer(
+		MakeSetContributeEndpoint(historysvc),
+		decodeSetContributeRequest,
+		encodeResponse,
+	)
+
+	getContributeHandler := httptransport.NewServer(
+		MakeGetContributeEndpoint(historysvc),
+		decodeGetContributeRequest,
+		encodeResponse,
+	)
+
 	http.Handle("/figure/proper", figureSingleProperHandler)
 	http.Handle("/figure/node", figureNodeProperHandler)
 	http.Handle("/event/proper", eventSingleProperHandler)
@@ -71,4 +83,6 @@ func Init() {
 	http.Handle("/relation/path", relationPathHandler)
 	http.Handle("/add/node", addNodeHandler)
 	http.Handle("/add/relation", addRelationHandler)
+	http.Handle("/contribute/set", setContributeHandler)
+	http.Handle("/contribute/get", getContributeHandler)
 }

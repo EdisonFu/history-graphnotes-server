@@ -91,7 +91,7 @@ func decodeEventNodeProperRequest(_ context.Context, r *http.Request) (interface
 func MakeRelationLineEndpoint(svc HistoryService) endpoint.Endpoint {
 	return func(_ context.Context, request interface{}) (interface{}, error) {
 		req := request.(RelationLineReq)
-		v, err := svc.ReadLineRelation(req.NameA, req.LableA, req.NameB, req.LableB)
+		v, err := svc.ReadLineRelation(req.NameA, req.LabelA, req.NameB, req.LabelB)
 		if err != nil || v == nil {
 			return RelationLineResp{-1, err.Error(), ""}, nil
 		}
@@ -110,7 +110,7 @@ func decodeRelationLineRequest(_ context.Context, r *http.Request) (interface{},
 func MakeRelationNodeEndpoint(svc HistoryService) endpoint.Endpoint {
 	return func(_ context.Context, request interface{}) (interface{}, error) {
 		req := request.(NodeRelationReq)
-		v, err := svc.ReadRelationNode(req.Name, req.Lable)
+		v, err := svc.ReadRelationNode(req.Name, req.Label)
 		if err != nil || v == nil {
 			return NodeRelationResp{-1, err.Error(), nil}, nil
 		}
@@ -129,7 +129,7 @@ func decodeRelationNodeRequest(_ context.Context, r *http.Request) (interface{},
 func MakeRelationPathEndpoint(svc HistoryService) endpoint.Endpoint {
 	return func(_ context.Context, request interface{}) (interface{}, error) {
 		req := request.(RelationPathReq)
-		v, err := svc.ReadAllRelationPath(req.NameA, req.LableA, req.NameB, req.LableB)
+		v, err := svc.ReadAllRelationPath(req.NameA, req.LabelA, req.NameB, req.LabelB)
 		if err != nil || v == nil {
 			return RelationPathResp{-1, err.Error(), nil}, nil
 		}
@@ -178,6 +178,39 @@ func MakeAddNodeRelationEndpoint(svc HistoryService) endpoint.Endpoint {
 
 func decodeAddNodeRelationRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	var request AddRelationReq
+	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+		return nil, err
+	}
+	return request, nil
+}
+
+//contribute handler
+func MakeSetContributeEndpoint(svc HistoryService) endpoint.Endpoint {
+	return func(_ context.Context, request interface{}) (interface{}, error) {
+		req := request.(SetContributeReq)
+		svc.SetUserContribute(req.UserId, req.Content)
+		return SetContributeResp{0, ""}, nil
+	}
+}
+
+func decodeSetContributeRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	var request SetContributeReq
+	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+		return nil, err
+	}
+	return request, nil
+}
+
+func MakeGetContributeEndpoint(svc HistoryService) endpoint.Endpoint {
+	return func(_ context.Context, request interface{}) (interface{}, error) {
+		req := request.(GetContributeReq)
+		data := svc.GetUserContribute(req.UserId)
+		return GetContributeResp{0, "", data}, nil
+	}
+}
+
+func decodeGetContributeRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	var request GetContributeReq
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		return nil, err
 	}

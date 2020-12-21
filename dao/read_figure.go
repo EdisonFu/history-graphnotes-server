@@ -21,6 +21,8 @@ func GetFigureSingleProper(name string, proper string) (interface{}, error) {
 		var list []string
 
 		cypher := `MATCH (a:Person) WHERE a.name=$name RETURN a.%s`
+		log.Printf("cypher:%s,\n,properMap:%v\n", fmt.Sprintf(cypher, proper), map[string]interface{}{"name": name})
+
 		result, err := tx.Run(fmt.Sprintf(cypher, proper), map[string]interface{}{"name": name})
 		if err != nil {
 			return nil, err

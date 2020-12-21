@@ -20,6 +20,8 @@ func GetRelation(nameA, labelA, nameB, labelB string) (interface{}, error) {
 		var list []string
 
 		cypher := `match( p1: %s {name:$nameA} )-[rel]->(p2: %s {name:$nameB} ) return rel.type`
+		log.Printf("cypher:%s,\n,properMap:%v\n", fmt.Sprintf(cypher, labelA, labelB), map[string]interface{}{"nameA": nameA, "nameB": nameB})
+
 		result, err := tx.Run(fmt.Sprintf(cypher, labelA, labelB), map[string]interface{}{"nameA": nameA, "nameB": nameB})
 		if err != nil {
 			return nil, err
@@ -71,6 +73,8 @@ func GetRelationAndNode(name, label string) (interface{}, error) {
 		relaNodeMap := make(map[string]string)
 
 		cypher := `MATCH (p: %s {name:$name} )-[r]- (a) RETURN type(r) as relation, r.year as year, a.name as name`
+		log.Printf("cypher:%s,\n,properMap:%v\n", fmt.Sprintf(cypher, label), map[string]interface{}{"name": name})
+
 		result, err := tx.Run(fmt.Sprintf(cypher, label), map[string]interface{}{"name": name})
 		if err != nil {
 			return nil, err
@@ -146,6 +150,8 @@ func GetAllRelationPath(nameA, labelA, nameB, labelB string) (interface{}, error
 	result, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
 		//cypher := `MATCH n=shortestPath((a:%s{name:$nameA})-[*]-(b:%s{name:$nameB})) return n`
 		cypher := `MATCH n=(a:%s{name:$nameA})-[*]-(b:%s{name:$nameB}) return n`
+		log.Printf("cypher:%s,\n,properMap:%v\n", fmt.Sprintf(cypher, labelA, labelB), map[string]interface{}{"nameA": nameA, "nameB": nameB})
+
 		result, err := tx.Run(fmt.Sprintf(cypher, labelA, labelB), map[string]interface{}{"nameA": nameA, "nameB": nameB})
 		if err != nil {
 			return nil, err
