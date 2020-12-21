@@ -13,5 +13,5 @@ type HistoryService interface {
 	AddNode(string, map[string]string) error
 	AddNodeRelation(string, string, string, string, string, map[string]string) error
 	SetUserContribute(string, string)
-	GetUserContribute(userId string) []string
+	GetUserContribute(userId string) interface{}
 }

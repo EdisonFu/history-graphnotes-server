@@ -152,5 +152,10 @@ type GetContributeReq struct {
 type GetContributeResp struct {
 	Code    int
 	Msg     string
-	Content []string
+	Content []*ContributeTime
+}
+
+type ContributeTime struct {
+	Date string
+	Text string
 }

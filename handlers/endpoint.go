@@ -205,7 +205,7 @@ func MakeGetContributeEndpoint(svc HistoryService) endpoint.Endpoint {
 	return func(_ context.Context, request interface{}) (interface{}, error) {
 		req := request.(GetContributeReq)
 		data := svc.GetUserContribute(req.UserId)
-		return GetContributeResp{0, "", data}, nil
+		return GetContributeResp{0, "", data.([]*ContributeTime)}, nil
 	}
 }
 
