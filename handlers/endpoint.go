@@ -220,6 +220,5 @@ func decodeGetContributeRequest(_ context.Context, r *http.Request) (interface{}
 }
 
 func encodeResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	return json.NewEncoder(w).Encode(response)
 }
