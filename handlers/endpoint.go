@@ -3,10 +3,9 @@ package handlers
 import (
 	"context"
 	"encoding/json"
+	"github.com/go-kit/kit/endpoint"
 	. "history-graph-notes-server/model"
 	"net/http"
-
-	"github.com/go-kit/kit/endpoint"
 )
 
 //figure handler
@@ -205,6 +204,9 @@ func MakeGetContributeEndpoint(svc HistoryService) endpoint.Endpoint {
 	return func(_ context.Context, request interface{}) (interface{}, error) {
 		req := request.(GetContributeReq)
 		data := svc.GetUserContribute(req.UserId)
+		if data == nil {
+			return GetContributeResp{0, "data is null!", nil}, nil
+		}
 		return GetContributeResp{0, "", data.([]*ContributeTime)}, nil
 	}
 }
@@ -218,5 +220,6 @@ func decodeGetContributeRequest(_ context.Context, r *http.Request) (interface{}
 }
 
 func encodeResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	return json.NewEncoder(w).Encode(response)
 }
