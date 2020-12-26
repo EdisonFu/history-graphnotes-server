@@ -137,6 +137,7 @@ func GetEventNodeProper(name string) (interface{}, error) {
 	})
 	if err != nil {
 		log.Println("GetEventNode session ReadTransaction err:", err)
+		return "", util.ErrEmpty
 	}
 
 	log.Println("result", events)
