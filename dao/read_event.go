@@ -114,10 +114,10 @@ func GetEventNodeProper(name string) (interface{}, error) {
 				event.Meaning = meaning.(string)
 			}
 			if participantGroups != nil {
-				event.ParticipantGroups = util.ToStringSlice(participantGroups.([]interface{}))
+				event.ParticipantGroups = participantGroups.(string)
 			}
 			if mainParticipantFigures != nil {
-				event.MainParticipantFigures = util.ToStringSlice(mainParticipantFigures.([]interface{}))
+				event.MainParticipantFigures = mainParticipantFigures.(string)
 			}
 
 			if result.Record().GetByIndex(0) != nil {

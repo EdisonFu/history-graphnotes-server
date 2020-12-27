@@ -109,10 +109,10 @@ func GetFigureNodeProper(name string) (interface{}, error) {
 				figure.Occupation = occupation.(string)
 			}
 			if achievements != nil {
-				figure.Achievements = util.ToStringSlice(achievements.([]interface{}))
+				figure.Achievements = achievements.(string)
 			}
 			if works != nil {
-				figure.Works = util.ToStringSlice(works.([]interface{}))
+				figure.Works = works.(string)
 			}
 
 			if result.Record().GetByIndex(0) != nil {

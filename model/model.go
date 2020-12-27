@@ -34,8 +34,8 @@ type HistoryFigure struct {
 	Birthday     string
 	Homeland     string
 	Occupation   string
-	Achievements []string
-	Works        []string
+	Achievements string
+	Works        string
 }
 
 //event
@@ -67,8 +67,8 @@ type HistoryEvent struct {
 	Location               string
 	Description            string
 	Meaning                string
-	ParticipantGroups      []string
-	MainParticipantFigures []string
+	ParticipantGroups      string
+	MainParticipantFigures string
 }
 
 //relation
