@@ -74,6 +74,18 @@ func Init() {
 		encodeResponse,
 	)
 
+	readNodeListHandler := httptransport.NewServer(
+		MakeReadNodeListEndpoint(historysvc),
+		decodeReadNodeListRequest,
+		encodeResponse,
+	)
+
+	readFitNodeHandler := httptransport.NewServer(
+		MakeReadFitNodeEndpoint(historysvc),
+		decodeReadFitNodeRequest,
+		encodeResponse,
+	)
+
 	http.Handle("/figure/proper", figureSingleProperHandler)
 	http.Handle("/figure/node", figureNodeProperHandler)
 	http.Handle("/event/proper", eventSingleProperHandler)
@@ -85,4 +97,6 @@ func Init() {
 	http.Handle("/add/relation", addRelationHandler)
 	http.Handle("/contribute/set", setContributeHandler)
 	http.Handle("/contribute/get", getContributeHandler)
+	http.Handle("/node/list", readNodeListHandler)
+	http.Handle("/node/fit", readFitNodeHandler)
 }

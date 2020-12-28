@@ -44,3 +44,23 @@ func TestAddNodeRelation(t *testing.T) {
 	}
 	fmt.Println("TestAddNodeRelation ok")
 }
+
+func TestGetNodeList(t *testing.T) {
+	InitNeo4jDB()
+	defer CloseNeo4j()
+	result, err := GetNodeList()
+	if err != nil {
+		fmt.Printf("TestGetNodeList err:%v", err)
+	}
+	fmt.Printf("TestGetNodeList result:%v", result)
+}
+
+func TestGetFitNode(t *testing.T) {
+	InitNeo4jDB()
+	defer CloseNeo4j()
+	result, err := GetFitNode("Aerson", "name", "A")
+	if err != nil {
+		fmt.Printf("GetFitNode err:%v", err)
+	}
+	fmt.Printf("GetFitNode result:%v", result)
+}

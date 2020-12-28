@@ -159,3 +159,25 @@ type ContributeTime struct {
 	Date string
 	Text string
 }
+
+//node
+type ReadNodeListReq struct {
+}
+
+type ReadNodeListResp struct {
+	Code int
+	Msg  string
+	Data []string
+}
+
+type ReadFitNodeReq struct {
+	Label  string
+	Proper string
+	Value  string
+}
+
+type ReadFitNodeResp struct {
+	Code int
+	Msg  string
+	Data []string
+}

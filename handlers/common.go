@@ -14,4 +14,6 @@ type HistoryService interface {
 	AddNodeRelation(string, string, string, string, string, map[string]string) error
 	SetUserContribute(string, string)
 	GetUserContribute(userId string) interface{}
+	ReadNodeList() (interface{}, error)
+	ReadFitNode(string, string, string) (interface{}, error)
 }

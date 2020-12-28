@@ -219,6 +219,45 @@ func decodeGetContributeRequest(_ context.Context, r *http.Request) (interface{}
 	return request, nil
 }
 
+//node handler
+func MakeReadNodeListEndpoint(svc HistoryService) endpoint.Endpoint {
+	return func(_ context.Context, request interface{}) (interface{}, error) {
+		_ = request.(ReadNodeListReq)
+		v, err := svc.ReadNodeList()
+		if err != nil || v == nil {
+			return ReadNodeListResp{-1, err.Error(), nil}, nil
+		}
+		return ReadNodeListResp{0, "", v.([]string)}, nil
+	}
+}
+
+func decodeReadNodeListRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	var request ReadNodeListReq
+	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+		return nil, err
+	}
+	return request, nil
+}
+
+func MakeReadFitNodeEndpoint(svc HistoryService) endpoint.Endpoint {
+	return func(_ context.Context, request interface{}) (interface{}, error) {
+		req := request.(ReadFitNodeReq)
+		data, err := svc.ReadFitNode(req.Label, req.Proper, req.Value)
+		if data == nil || err != nil {
+			return ReadFitNodeResp{0, "data is null!", nil}, nil
+		}
+		return ReadFitNodeResp{0, "", data.([]string)}, nil
+	}
+}
+
+func decodeReadFitNodeRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	var request ReadFitNodeReq
+	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+		return nil, err
+	}
+	return request, nil
+}
+
 func encodeResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	return json.NewEncoder(w).Encode(response)
 }
