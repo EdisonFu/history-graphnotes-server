@@ -89,7 +89,9 @@ func GetRelationAndNode(name, label string) (interface{}, error) {
 			if n != nil {
 				switch n.(type) {
 				case interface{}:
-					name = n.(string)
+					if util.CheckInterfaceIsString(n) {
+						name = n.(string)
+					}
 				case []interface{}:
 					name = strings.Join(util.ToStringSlice(n.([]interface{})), ",")
 				}
