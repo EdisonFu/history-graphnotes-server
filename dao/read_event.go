@@ -95,28 +95,28 @@ func GetEventNodeProper(name string) (interface{}, error) {
 			description, _ := record.Get("description")
 			meaning, _ := record.Get("meaning")
 
-			if name != nil {
+			if name != nil && util.CheckInterfaceIsString(name) {
 				event.Name = name.(string)
 			}
-			if aliasName != nil {
+			if aliasName != nil && util.CheckInterfaceIsString(aliasName) {
 				event.AliasName = aliasName.(string)
 			}
-			if ocurrTime != nil {
+			if ocurrTime != nil && util.CheckInterfaceIsString(ocurrTime) {
 				event.OcurrTime = ocurrTime.(string)
 			}
-			if location != nil {
+			if location != nil && util.CheckInterfaceIsString(location) {
 				event.Location = location.(string)
 			}
-			if description != nil {
+			if description != nil && util.CheckInterfaceIsString(description) {
 				event.Description = description.(string)
 			}
-			if meaning != nil {
+			if meaning != nil && util.CheckInterfaceIsString(meaning) {
 				event.Meaning = meaning.(string)
 			}
-			if participantGroups != nil {
+			if participantGroups != nil && util.CheckInterfaceIsString(participantGroups) {
 				event.ParticipantGroups = participantGroups.(string)
 			}
-			if mainParticipantFigures != nil {
+			if mainParticipantFigures != nil && util.CheckInterfaceIsString(mainParticipantFigures) {
 				event.MainParticipantFigures = mainParticipantFigures.(string)
 			}
 

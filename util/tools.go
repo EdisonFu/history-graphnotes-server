@@ -11,3 +11,12 @@ func ToStringSlice(slice []interface{}) []string {
 	}
 	return result
 }
+
+func CheckInterfaceIsString(inter interface{}) bool {
+	switch inter.(type) {
+	case string:
+		return true
+	default:
+		return false
+	}
+}

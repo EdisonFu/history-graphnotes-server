@@ -93,25 +93,25 @@ func GetFigureNodeProper(name string) (interface{}, error) {
 			achievements, _ := record.Get("achievements")
 			works, _ := record.Get("works")
 
-			if name != nil {
+			if name != nil && util.CheckInterfaceIsString(name) {
 				figure.Name = name.(string)
 			}
-			if country != nil {
+			if country != nil && util.CheckInterfaceIsString(country) {
 				figure.Country = country.(string)
 			}
-			if birthday != nil {
+			if birthday != nil && util.CheckInterfaceIsString(birthday) {
 				figure.Birthday = birthday.(string)
 			}
-			if homeland != nil {
+			if homeland != nil && util.CheckInterfaceIsString(homeland) {
 				figure.Homeland = homeland.(string)
 			}
-			if occupation != nil {
+			if occupation != nil && util.CheckInterfaceIsString(occupation) {
 				figure.Occupation = occupation.(string)
 			}
-			if achievements != nil {
+			if achievements != nil && util.CheckInterfaceIsString(achievements) {
 				figure.Achievements = achievements.(string)
 			}
-			if works != nil {
+			if works != nil && util.CheckInterfaceIsString(works) {
 				figure.Works = works.(string)
 			}
 
